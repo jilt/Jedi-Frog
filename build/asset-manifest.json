@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e65c6b94.css",
+    "main.js": "/static/js/main.bed1bb20.js",
+    "static/js/453.4d9761c0.chunk.js": "/static/js/453.4d9761c0.chunk.js",
+    "static/media/frog-logo.png": "/static/media/frog-logo.5392bcfb70984ab9673b.png",
+    "index.html": "/index.html",
+    "main.e65c6b94.css.map": "/static/css/main.e65c6b94.css.map",
+    "main.bed1bb20.js.map": "/static/js/main.bed1bb20.js.map",
+    "453.4d9761c0.chunk.js.map": "/static/js/453.4d9761c0.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e65c6b94.css",
+    "static/js/main.bed1bb20.js"
+  ]
+}
