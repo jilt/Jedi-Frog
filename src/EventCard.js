@@ -18,7 +18,7 @@ const EventCard = ({ feed }) => {
     provider.request({ method: 'eth_requestAccounts' })
         .then(accounts => {
             selectedAccount = accounts[0];
-            console.log(`Selected account for events: ${selectedAccount}`);
+            // console.log(`Selected account for events: ${selectedAccount}`);
         })
         .catch(error => { console.log(error); });
 
@@ -33,7 +33,7 @@ const EventCard = ({ feed }) => {
                 });
                 let display = events.reverse();
                 setEvents(display);
-                console.log(display);
+                // console.log(display);
             } catch (error) {
                 console.log(error);
             }

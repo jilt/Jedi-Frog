@@ -1,6 +1,7 @@
 import logo from './assets/images/frog-logo.png';
 import React, { useEffect, useState } from "react";
 import Web3 from "web3";
+import { Dune } from "dune-api-client";
 import ABI from './contracts/StatusContract.json';
 import { set, setStatus } from './Web3Set';
 import EventCard from './EventCard';
@@ -14,14 +15,100 @@ function App() {
     const [newStatus, setNewStatus] = useState('');
     const [account, setAccount] = useState('');
     const [contract, setContract] = useState({});
+    const [fam, setFam] = useState(false);
 
-    // let timeline;
 
     let selectedAccount;
 
     let provider;
 
+    // Fam ABI import
+
+    const erc20ABI = [
+        {
+            constant: true,
+
+            inputs: [{ name: '_owner', type: 'address' }],
+
+            name: 'balanceOf',
+
+            outputs: [{ name: 'balance', type: 'uint256' }],
+
+            type: 'function',
+        },
+    ];
+
+    // Fam tokens addresses
+
+    const efrogs = "0x194395587d7b169e63eaf251e86b1892fa8f1960";
+    const croack = "0xacb54d07ca167934f57f829bee2cc665e1a5ebef";
+    const lxp = "0xd83af4fbd77f3ab65c3b1dc4b38d7e67aecf599a";
+
+    // check Fam ownership
+
+    const lineaProv = process.env.INFURA_RPC;
+
+    const LineaClient = new Web3(new Web3.providers.HttpProvider(lineaProv));
+
+    var web3linea = new Web3(LineaClient);
+
+    const croackcontract = new web3linea.eth.Contract(erc20ABI, croack);
+    const lxpcontract = new web3linea.eth.Contract(erc20ABI, lxp);
+    const efrogcontract = new web3linea.eth.Contract(erc20ABI, efrogs);
+
+    const getDev = async (add) => {
+
+        if (add = "0xEA867Afff7Ca46441424F499D4c30BCc34d8b6E5") {
+            setFam(true);
+            console.log('is dev');
+        }
+    };
+
+    const getFam2 = async (add) => {
+
+        const isFam = await lxpcontract.methods.balanceOf(add).call();
+        if (isFam > 0) {
+            setFam(true);
+        } else {
+            getDev(add);
+            console.log("not lxp");
+        }
+    };
+
+    const getFam1 = async (add) => {
+
+        const isFam = await efrogcontract.methods.balanceOf(add).call();
+        if (isFam > 0) {
+            setFam(true);
+        } else {
+            getFam2(add)
+            console.log("not efrog");
+        }
+
+    };
+
+    const getFam = async (add) => {
+
+        const isFam = await croackcontract.methods.balanceOf(add).call();
+        if (isFam > 0) {
+            setFam(true);
+        } else {
+            getFam1(add);
+            console.log("not croack");
+        }
+
+    };
+
     const init = async () => {
+
+        // get addresses of EigerLAyer investors
+
+        // const dune = new Dune('process.env.DUNE_API');
+        // const execute = await dune.execute(3592801);
+        // const eiger = await dune.results(execute.data.execution_id);
+
+
+        // console.log(eiger);
 
         // const providerUrl = process.env.INFURA_RPC;
 
@@ -46,6 +133,7 @@ function App() {
             });
 
             const web3 = new Web3(provider);
+            
 
             const lineaChain = "0xe705";
 
@@ -135,6 +223,7 @@ function App() {
         let isValid = await isValidAddress(account);
         if (isValid) {
             try {
+                getFam(account);
                 let timeline = await contract.methods.getStatus(account).call();
                 setFeed(timeline);
                 let previous = await contract.methods.statuses(account).call();

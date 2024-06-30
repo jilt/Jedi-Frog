@@ -13,7 +13,6 @@ const EventDate = ({ timestamp }) => {
             let day = converted.getDate();
             let hour = converted.getUTCHours();
             let minute = converted.getMinutes();
-            console.log(year);
             let newDate = `${day}-${month}`;
             setDay(newDate);
         } catch (error) { console.log(error); }
