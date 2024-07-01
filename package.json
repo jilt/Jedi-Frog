@@ -7,11 +7,15 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "contracts": "file:./artifacts/contracts/StatusContract.sol/",
+    "dotenv": "^16.4.5",
+    "dotenv-webpack": "^8.1.0",
+    "dune-api-client": "^1.0.1",
     "react": "^18.3.1",
+    "react-app-rewired": "^2.2.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4",
     "swiper": "^11.0.7",
+    "web-vitals": "^2.1.4",
     "web3": "^4.10.0"
   },
   "devDependencies": {
