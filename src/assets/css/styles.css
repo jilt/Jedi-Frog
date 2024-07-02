@@ -1103,6 +1103,14 @@ video {
     color: red;
     margin-top: 1em;
 }
+.jedi {
+    background: rgba(0, 200, 0, .5);
+    border-radius: 5px;
+    border: 1px solid lightgreen;
+    padding: .5em 1em;
+    color: lightgreen;
+    margin-top: 1em;
+}
 
 .message {
     display:block;

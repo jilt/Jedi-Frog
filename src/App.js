@@ -1,21 +1,27 @@
 import logo from './assets/images/frog-logo.png';
+import './assets/css/custom.css';
+import './assets/css/styles.css';
+import './assets/css/tailwind.css';
 import React, { useEffect, useState } from "react";
 import Web3 from "web3";
 import { Dune } from "dune-api-client";
 import ABI from './contracts/StatusContract.json';
 import { set, setStatus } from './Web3Set';
 import EventCard from './EventCard';
-import './assets/css/custom.css';
-import './assets/css/styles.css';
-import './assets/css/tailwind.css';
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 function App() {
     const [status, foundStatus] = useState('');
     const [feed, setFeed] = useState('');
+    const [timeline, setTimeline] = useState('');
     const [newStatus, setNewStatus] = useState('');
     const [account, setAccount] = useState('');
     const [contract, setContract] = useState({});
-    const { REACT_APP_DUNE } = process.env;
+    const { REACT_APP_CHAINSAFE } = process.env;
+    const { REACT_APP_BUCKET } = process.env;
+    const { REACT_APP_CID } = process.env;
+    const { REACT_APP_AI } = process.env;
+
 
     let selectedAccount;
     let provider;
@@ -141,13 +147,47 @@ function App() {
         }
     }
 
+    const getPrompt = async () => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        const response = await fetch(`https://ipfs-chainsafe.dev/ipfs/${REACT_APP_CID}`, requestOptions);
+        const data = await response.json();
+        let feedNumber = Math.floor(Math.random() * 100);
+        // setFeed(data.journal[feedNumber].prompt);
+
+        // call ai model
+        const genAI = new GoogleGenerativeAI(REACT_APP_AI);
+
+
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+        async function run() {
+            const prompt = `can you refrase "what's the difference from then to now?" for the context of ${data.journal[feedNumber].prompt}in a general way? please give only one answer`
+
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text();
+            setFeed(text);
+        }
+
+        run();
+    }
+
     const getStatus = async (contract, account) => {
 
         let isValid = await isValidAddress(account);
         if (isValid) {
             try {
                 let timeline = await contract.methods.getStatus(account).call();
-                setFeed(timeline);
+                setTimeline(timeline);
+                getPrompt();
                 let previous = await contract.methods.statuses(account).call();
                 foundStatus(previous);
             } catch (error) {

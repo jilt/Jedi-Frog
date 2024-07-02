@@ -42,7 +42,6 @@ const EventCard = ({ feed, address }) => {
     // check Fam ownership
 
     const lineaProv = REACT_APP_INFURA_RPC;
-    console.log(lineaProv);
 
     const LineaClient = new Web3(new Web3.providers.HttpProvider(lineaProv));
 
@@ -125,13 +124,13 @@ const EventCard = ({ feed, address }) => {
     }, []);
 
     return (
-        <>
+        <> {!fam ? "" : <p className="text-white jedi">{ feed }</p>}
             <ol class="my-7 list-outside">
                 {events.map(function (data, index) {
                     return (
                         <li className="flex items-center mb-4" key={index}>
                             <strong className="bg-primary text-white rounded-full w-8 h-8 text-lg font-semibold flex items-center justify-center mr-3">{((events.length) - index)}</strong>
-                            <span className="text-white">{data.returnValues[1]}</span> {!fam ? <EventDate timestamp={data.blockNumber} /> : <span class="text-right text-primary date">Jedi question</span>}
+                            <span className="text-white">{data.returnValues[1]}</span> <EventDate timestamp={data.blockNumber} />
                         </li>
                     )
                 })}
