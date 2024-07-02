@@ -8,7 +8,8 @@ import { Dune } from "dune-api-client";
 import ABI from './contracts/StatusContract.json';
 import { set, setStatus } from './Web3Set';
 import EventCard from './EventCard';
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+import { GoogleGenerativeAI } from '@ai-sdk/google';
+// const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 function App() {
     const [status, foundStatus] = useState('');
