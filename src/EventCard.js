@@ -52,7 +52,7 @@ const EventCard = ({ feed, address }) => {
     const efrogcontract = new web3linea.eth.Contract(erc20ABI, efrogs);
 
     const getDev = async (add) => {
-        if (add === "0xea867afff7ca46441424f499d4c30bcc34d8b6e5") {
+        if (add === "0xb67153a6005edbc61aD945057063885bB639dC23") {
             setFam(true);
         }
     };
